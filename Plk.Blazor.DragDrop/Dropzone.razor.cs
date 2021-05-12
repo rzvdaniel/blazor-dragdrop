@@ -10,6 +10,12 @@ namespace Plk.Blazor.DragDrop
 {
     public partial class Dropzone<TItem>
     {
+        public TItem ActiveItem
+        {
+            get { return DragDropService.ActiveItem; }
+            set { DragDropService.ActiveItem = value; }
+        }
+
         private void OnDropItemOnSpacing(int newIndex)
         {
             if (!IsDropAllowed())
@@ -25,7 +31,8 @@ namespace Plk.Blazor.DragDrop
             {
                 if (CopyItem == null)
                 {
-                    DragDropService.Items.Remove(activeItem);
+                    if (DragDropService.Items != null)
+                        DragDropService.Items.Remove(activeItem);
                 }
             }
             else // same dropzone drop
@@ -120,7 +127,7 @@ namespace Plk.Blazor.DragDrop
             }
 
             DragDropService.Reset();
-        //dragTargetItem = default;
+            //dragTargetItem = default;
         }
 
         public void OnDragEnter(TItem item)
@@ -348,7 +355,8 @@ namespace Plk.Blazor.DragDrop
                     if (CopyItem == null)
                     {
                         Items.Insert(Items.Count, activeItem); //insert item to new zone
-                        DragDropService.Items.Remove(activeItem); //remove from old zone
+                        if (DragDropService.Items != null)
+                            DragDropService.Items.Remove(activeItem); //remove from old zone
                     }
                     else
                     {
@@ -357,7 +365,8 @@ namespace Plk.Blazor.DragDrop
                 }
                 else
                 {
-                //what to do here?
+                    //what to do here?
+
                 }
             }
             else // we have a direct target
@@ -403,7 +412,8 @@ namespace Plk.Blazor.DragDrop
                 //insert into new zone
                 Items.Insert(indexDraggedOverItem + 1, activeItem);
                 //remove from old zone
-                DragDropService.Items.Remove(activeItem);
+                if (DragDropService.Items != null)
+                    DragDropService.Items.Remove(activeItem);
             }
             else if (InstantReplace) //swap the items
             {

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Plk.Blazor.DragDrop\Plk.Blazor.DragDrop.csproj" />
+    <ProjectReference Include="C:\Work\Personal\ant-design-blazor\components\AntDesign.csproj" />
   </ItemGroup>
 
 </Project>

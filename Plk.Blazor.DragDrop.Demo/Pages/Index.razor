@@ -4,41 +4,71 @@
 
 <div id="main" class="container-fluid">
 
-    <input placeholder="Something todo" @bind="newTodo" />
-    <button @onclick="AddTodo" class="btn btn-success">Add</button>
+    <Tree @ref="tree"
+          ShowIcon DataSource="treeGames"
+          Multiple="@multiple"
+          TitleExpression="x => x.DataItem.Text"
+          ChildrenExpression="x => x.DataItem.Items"
+          IconExpression="x => x.DataItem.Icon"
+          IsLeafExpression="x => x.DataItem.Items?.Count == 0"
+          KeyExpression="x => x.DataItem.Id"
+          DraggableExpression="x => x.DataItem.Draggable"
+          Draggable="true"
+          @bind-SelectedKey="@selectedKey"
+          @bind-SelectedData="@selectedData"
+          @bind-SelectedNode="@selectedNode"
+          @bind-SelectedKeys="@selectedKeys"
+          OnNodeDrag="@((i)=>
+            {
+                dropzone.ActiveItem = new GameElement(i.Id, i.Text, i.Icon);
+            })"
+          TItem="GameElement">
+    </Tree>
 
     <hr />
 
-    <Dropzone Items="MyToDoList">
-        <Todo OnRemoveClick="(item)=>MyToDoList.Remove(item)" Item="@context"></Todo>
+    <Dropzone Items="games" @ref="dropzone">
+        <Game OnRemoveClick="(item)=>games.Remove(item)" Item="@context"></Game>
     </Dropzone>
 
 </div>
 
 @code{
 
-    private string newTodo;
+        private bool multiple;
 
-    private void AddTodo()
-    {
-        if (!string.IsNullOrWhiteSpace(newTodo))
+        Tree<GameElement> tree;
+        Dropzone<GameElement> dropzone;
+
+        protected override void OnInitialized()
         {
-            MyToDoList.Add(new TodoItem { Titel = newTodo });
-            newTodo = string.Empty;
+            base.OnInitialized();
         }
-    }
+
+        string selectedKey;
+
+        GameElement selectedData;
+
+        TreeNode<GameElement> selectedNode;
+
+        string[] selectedKeys;
 
 
-
-    public List<TodoItem> MyToDoList = new List<TodoItem>()
+        List<GameElement> treeGames = new List<GameElement>()
     {
-            new TodoItem(){Titel = "Drag this item"},
-            new TodoItem(){Titel = "Add another item"},
-            new TodoItem(){Titel = "Remove this item"},
-            new TodoItem(){Titel = "Style this list"},
-            new TodoItem(){Titel = "Fix a bug"},
-            new TodoItem(){Titel = "Build a feature"},
-            new TodoItem(){Titel = "Create a PR"},
+        new ("100","XBox","windows")
+        {
+            Items=new List<GameElement>()
+{
+                new ("101","Halo"),
+                 new ("102","Gears of War"),
+                 new ("103","Forza Motosport")
+            }
+        }
     };
 
+        List<GameElement> games = new List<GameElement>()
+    {
+        new ("100","XBox","windows")
+    };
 }
