@@ -10,12 +10,6 @@ namespace Plk.Blazor.DragDrop
 {
     public partial class Dropzone<TItem>
     {
-        public TItem ActiveItem
-        {
-            get { return DragDropService.ActiveItem; }
-            set { DragDropService.ActiveItem = value; }
-        }
-
         private void OnDropItemOnSpacing(int newIndex)
         {
             if (!IsDropAllowed())
@@ -54,9 +48,10 @@ namespace Plk.Blazor.DragDrop
                 Items.Insert(newIndex, sameDropZone ? activeItem : CopyItem(activeItem));
             }
 
+            OnItemDrop.InvokeAsync(activeItem);
+
             //Operation is finished
             DragDropService.Reset();
-            OnItemDrop.InvokeAsync(activeItem);
         }
 
         private bool IsMaxItemLimitReached()
@@ -315,6 +310,12 @@ namespace Plk.Blazor.DragDrop
         [Parameter]
         public Func<TItem, TItem> CopyItem { get; set; }
 
+        public TItem ActiveItem
+        {
+            get { return DragDropService.ActiveItem; }
+            set { DragDropService.ActiveItem = value; }
+        }
+
         private bool IsDropAllowed()
         {
             var activeItem = DragDropService.ActiveItem;
@@ -398,9 +399,10 @@ namespace Plk.Blazor.DragDrop
                 }
             }
 
+            OnItemDrop.InvokeAsync(activeItem);
+
             DragDropService.Reset();
             StateHasChanged();
-            OnItemDrop.InvokeAsync(activeItem);
         }
 
         private void Swap(TItem draggedOverItem, TItem activeItem)
