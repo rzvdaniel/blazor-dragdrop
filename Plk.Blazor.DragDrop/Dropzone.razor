@@ -31,6 +31,8 @@
              @ondragend="()=>OnDragEnd()"
              @ondragenter="()=>OnDragEnter(item)"
              @ondragleave="()=>OnDragLeave()"
+             @onclick="()=>OnClick(item)"
+             @onmousedown="()=>OnMouseDown(item)"
              class="@GetClassesForDraggable(item) @CheckIfItemIsInTransit(item) @CheckIfItemIsDragTarget(item) @CheckIfDragOperationIsInProgess() @CheckIfDraggable(item)">
 
             @{

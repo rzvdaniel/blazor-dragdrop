@@ -254,6 +254,18 @@ namespace Plk.Blazor.DragDrop
         public EventCallback<TItem> OnItemDrop { get; set; }
 
         /// <summary>
+        /// Raises a callback with clicked item as parameter
+        /// </summary>
+        [Parameter]
+        public EventCallback<TItem> OnItemClick { get; set; }
+
+        /// <summary>
+        /// Raises a callback with mouse down item as parameter
+        /// </summary>
+        [Parameter]
+        public EventCallback<TItem> OnItemMouseDown { get; set; }
+
+        /// <summary>
         /// Raises a callback with the replaced item as parameter
         /// </summary>
         [Parameter]
@@ -337,6 +349,16 @@ namespace Plk.Blazor.DragDrop
             }
 
             return true;
+        }
+
+        private void OnClick(TItem item)
+        {
+            OnItemClick.InvokeAsync(item);
+        }
+
+        private void OnMouseDown(TItem item)
+        {
+            OnItemMouseDown.InvokeAsync(item);
         }
 
         private void OnDrop()
