@@ -242,6 +242,19 @@ namespace Plk.Blazor.DragDrop
         public Action<TItem> DragEnd { get; set; }
 
         /// <summary>
+        /// Raises a Dropzone click callback 
+        /// </summary>
+        [Parameter]
+        public EventCallback OnDropzoneClick { get; set; }
+
+        /// <summary>
+        /// Raises a Dropzone mouse down callback 
+        /// </summary>
+        [Parameter]
+        public EventCallback OnDropzoneMouseDown { get; set; }
+
+
+        /// <summary>
         /// Raises a callback with the dropped item as parameter in case the item can not be dropped due to the given Accept Delegate
         /// </summary>
         [Parameter]
@@ -264,6 +277,12 @@ namespace Plk.Blazor.DragDrop
         /// </summary>
         [Parameter]
         public EventCallback<TItem> OnItemMouseDown { get; set; }
+
+        /// <summary>
+        /// Raises a callback with double clicked item as parameter
+        /// </summary>
+        [Parameter]
+        public EventCallback<TItem> OnItemDoubleClick { get; set; }  
 
         /// <summary>
         /// Raises a callback with the replaced item as parameter
@@ -351,14 +370,29 @@ namespace Plk.Blazor.DragDrop
             return true;
         }
 
-        private void OnClick(TItem item)
+        private void DropzoneClick()
+        {
+            OnDropzoneClick.InvokeAsync(null);
+        }
+
+        private void DropzoneMouseDown()
+        {
+            OnDropzoneMouseDown.InvokeAsync(null);
+        }
+
+        private void ItemClick(TItem item)
         {
             OnItemClick.InvokeAsync(item);
         }
 
-        private void OnMouseDown(TItem item)
+        private void ItemMouseDown(TItem item)
         {
             OnItemMouseDown.InvokeAsync(item);
+        }
+
+        private void ItemDoubleClick(TItem item)
+        {
+            OnItemDoubleClick.InvokeAsync(item);
         }
 
         private void OnDrop()

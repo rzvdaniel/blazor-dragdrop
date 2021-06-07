@@ -9,6 +9,8 @@
      @ondragenter:preventDefault
      @ondragenter="()=> { }"
      @ondrop="()=>OnDrop()"
+     @onmousedown="()=>DropzoneMouseDown()"
+     @onclick="()=>DropzoneClick()"
      @ondrop:preventDefault
      ondragstart="event.dataTransfer.setData('text', event.target.id);"
      @ondrop:stopPropagation
@@ -16,7 +18,8 @@
      @ondragend:stopPropagation
      @ondragover:stopPropagation
      @ondragleave:stopPropagation
-     @ondragstart:stopPropagation>
+     @ondragstart:stopPropagation
+     >
 
     @foreach (var item in Items)
     {
@@ -31,8 +34,9 @@
              @ondragend="()=>OnDragEnd()"
              @ondragenter="()=>OnDragEnter(item)"
              @ondragleave="()=>OnDragLeave()"
-             @onclick="()=>OnClick(item)"
-             @onmousedown="()=>OnMouseDown(item)"
+             @onclick="()=>ItemClick(item)"
+             @ondblclick="()=>ItemDoubleClick(item)" @ondblclick:stopPropagation="true"
+             @onmousedown="()=>ItemMouseDown(item)" @onmousedown:stopPropagation="true"
              class="@GetClassesForDraggable(item) @CheckIfItemIsInTransit(item) @CheckIfItemIsDragTarget(item) @CheckIfDragOperationIsInProgess() @CheckIfDraggable(item)">
 
             @{
